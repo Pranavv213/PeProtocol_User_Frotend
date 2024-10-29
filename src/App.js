@@ -50,7 +50,7 @@ function App() {
        const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
        // Sending amount as Ether (converted to Wei)
-       const tx = await contract.sendAmount(upiURL, amount.toString(), {
+       const tx = await contract.sendAmount(upiURL, (amount*0.000000000000000001*28.39).toString(), {
           value: ethers.utils.parseEther(amount.toString()), // Ensure this is in Wei
        });
 
