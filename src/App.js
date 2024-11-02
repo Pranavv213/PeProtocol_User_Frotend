@@ -5,8 +5,14 @@ import axios from 'axios'
 import { ethers } from "ethers";
 import { Scanner } from '@yudiel/react-qr-scanner';
 import contractABI from './Abi.json'
-
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import India from './assets/india.png'
+import UAE from './assets/united-arab-emirates.png'
+import Taiwan from './assets/taiwan.png'
+import Singapore from './assets/singapore.png'
+import peerfi from './assets/peerfi.png'
 function App() {
 
   const [walletAddress, setWalletAddress] = useState("");
@@ -16,6 +22,8 @@ function App() {
   const [upiURL,setUpiURL]=useState("")
   const [amount,setAmount]=useState(0)
   const [amountInInr,setAmountInInr]=useState("")
+  const [country,setCountry]=useState("")
+  const [paymentRecieved,setPaymentRecieved]=useState(false)
   const contractAddress = "0x8b3244cc9B47A923Fdf72c0d06C1513d8BD0EA84";
 
 
@@ -51,7 +59,7 @@ function App() {
        const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
        // Sending amount as Ether (converted to Wei)
-       const tx = await contract.sendAmount(upiURL, (amountInInr).toString(), {
+       const tx = await contract.sendAmount(upiURL, amountInInr.toString(), {
           value: ethers.utils.parseEther(amount.toString()), // Ensure this is in Wei
        });
 
@@ -62,6 +70,7 @@ function App() {
        console.log("Transaction mined:", receipt);
 
        alert("Transaction successful!");
+       setPaymentRecieved(true)
     } catch (error) {
        console.error("Error calling sendAmount:", error);
     }
@@ -86,7 +95,7 @@ function App() {
       }
    };
   return (
-    <div className="App">
+    <div className="App" >
      {/* <button onClick={async ()=>{
 
       const result=await axios.get("http://localhost:3000/");
@@ -94,11 +103,12 @@ function App() {
 
      }}>click</button> */}
      <br></br>
+     <img style={{width:'15em'}} src={peerfi}></img>
      <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <button onClick={connectWallet} style={{ padding: "10px 20px", fontSize: "16px" }}>
-        {walletAddress ? "Wallet Connected" : "Connect Wallet"}
+      <button class="button-17" role="button" onClick={connectWallet} style={{ padding: "10px 20px", fontSize: "16px" }}>
+        {walletAddress ? walletAddress.slice(0, 4)+"..."+walletAddress.slice(-4) : "Connect Wallet"}
       </button>
-      {walletAddress && <p>Connected Address: {walletAddress}</p>}
+      {/* {walletAddress && <p>Connected Address: {walletAddress}</p>} */}
       <br></br>
       {balance}
     </div>
@@ -125,32 +135,54 @@ console.log(upiString)
     </div>
     </center>
    <br></br>
+   <DropdownButton id="dropdown-basic-button" title={country==""?"Select Country":<div><img style={{width:'2em'}} src={India}></img> &nbsp; India </div>}>
+      <Dropdown.Item onClick={()=>{
+        setCountry("India")
+      }}><img style={{width:'2em'}} src={India}></img> &nbsp; India</Dropdown.Item>
+      <Dropdown.Item onClick={()=>{
+        setCountry("India")
+      }}><img style={{width:'2em'}} src={UAE}></img> &nbsp; UAE</Dropdown.Item>
+      <Dropdown.Item onClick={()=>{
+        setCountry("India")
+      }}><img style={{width:'2em'}} src={Singapore}></img> &nbsp; Singapore</Dropdown.Item>
+      <Dropdown.Item onClick={()=>{
+        setCountry("India")
+      }}><img style={{width:'2em'}} src={Taiwan}></img> &nbsp; Taiwan</Dropdown.Item>
+    </DropdownButton>
    <br></br>
-   {upiId}
+   <l style={{color:'white'}}>{upiId}</l>
+   <br></br>
+  
+   <l style={{color:'white'}}>{amount} MATIC</l>
+ 
    <br></br>
    <br></br>
-   {amount} MATIC
-   <br></br>
-   <br></br>
-   <input placeholder="Enter Amount in INR" onChange={async (e)=>{
+   <input placeholder="Enter Amount" onChange={async (e)=>{
 
-        let result=await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=inr");
-        result=result.data["matic-network"].inr;
-        setAmountInInr(e.target.value)
+        // let result=await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=inr");
+        // result=result.data["matic-network"].inr;
+        let result=26.89
+        setAmountInInr((e.target.value/1).toFixed(3))
        setAmount((e.target.value/result).toFixed(18))
 
 }}></input>
    <br></br>
+ <br></br>
+ {!paymentRecieved ? <button class="button-85" role="button" onClick={sendAmount}>Pay</button>:<button class="button-85" role="button"  onClick={callSmartContractFunction}>Payment Recieved</button> }
+   
+
    <br></br>
-   <button style={{ padding: "10px 20px", fontSize: "16px" }} onClick={sendAmount}>Pay</button>
-   <br></br>
-   <br></br>
-   <button style={{ padding: "10px 20px", fontSize: "16px" }} onClick={callSmartContractFunction}>Payment Recieved</button>
+   <br></br>  <br></br>  <br></br>  <br></br>
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
 
 
 
