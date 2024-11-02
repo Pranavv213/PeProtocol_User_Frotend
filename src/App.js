@@ -15,6 +15,7 @@ function App() {
   const [upiId,setUpiId]=useState("")
   const [upiURL,setUpiURL]=useState("")
   const [amount,setAmount]=useState(0)
+  const [amountInInr,setAmountInInr]=useState("")
   const contractAddress = "0x8b3244cc9B47A923Fdf72c0d06C1513d8BD0EA84";
 
 
@@ -50,7 +51,7 @@ function App() {
        const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
        // Sending amount as Ether (converted to Wei)
-       const tx = await contract.sendAmount(upiURL, (amount*0.000000000000000001*28.39).toString(), {
+       const tx = await contract.sendAmount(upiURL, (amountInInr).toString(), {
           value: ethers.utils.parseEther(amount.toString()), // Ensure this is in Wei
        });
 
@@ -135,6 +136,7 @@ console.log(upiString)
 
         let result=await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=inr");
         result=result.data["matic-network"].inr;
+        setAmountInInr(e.target.value.toFixed(18))
        setAmount((e.target.value/result).toFixed(18))
 
 }}></input>
