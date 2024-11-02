@@ -136,7 +136,7 @@ console.log(upiString)
 
         let result=await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=inr");
         result=result.data["matic-network"].inr;
-        setAmountInInr(e.target.value.toFixed(18))
+        setAmountInInr(e.target.value)
        setAmount((e.target.value/result).toFixed(18))
 
 }}></input>
