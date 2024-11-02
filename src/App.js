@@ -24,7 +24,7 @@ function App() {
   const [amountInInr,setAmountInInr]=useState("")
   const [country,setCountry]=useState("")
   const [paymentRecieved,setPaymentRecieved]=useState(false)
-  const contractAddress = "0x8b3244cc9B47A923Fdf72c0d06C1513d8BD0EA84";
+  const contractAddress = "0x017696173BC2f47b2357ad78B08eFeA071cd92d2";
 
 
   

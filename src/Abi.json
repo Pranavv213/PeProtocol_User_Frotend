@@ -7,7 +7,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "claimStake",
+		"name": "claimRewards",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -379,4 +379,3 @@
 		"type": "function"
 	}
 ]
-
